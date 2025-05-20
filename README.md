@@ -13,12 +13,16 @@ O objetivo deste trabalho é comparar a eficiência dos algoritmos de ordenaçã
 ## Estrutura de Diretórios
 
 ```plain
-├── CMakeLists.txt      # Script de build CMake
-├── codigo              # Código-fonte de implementação
-│   ├── busca.cpp       # Funções de busca
+├── CMakeLists.txt        # Script de build CMake
+├── codigo                # Código-fonte de implementação
+│   ├── busca.cpp         # Funções de busca
 │   ├── gerador_dados.cpp # Geração de vetores de teste
-│   └── ordenacao.cpp   # Implementação dos algoritmos de ordenação
-└── README.md           # Documentação do projeto
+│   └── ordenacao.cpp     # Implementação dos algoritmos de ordenação
+├── dados                 # Dados usados para cálculos
+│   ├── pequeno.bin       # Grupo de dados pequenos
+│   ├── medio.bin         # Grupo de dados médios
+│   └── grande.bin        # Grupo de dados grandes
+└── README.md             # Documentação do projeto
 ```
 
 ## Requisitos
