@@ -14,4 +14,4 @@ target_include_directories(ed1_prova2 PRIVATE ${CMAKE_SOURCE_DIR}/codigo)
 
 set_target_properties(ed1_prova2 PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin" CXX_EXTENSIONS OFF)
 
-target_compile_features(ed1_prova2 PRIVATE cxx_std_20)
+target_compile_features(ed1_prova2 PRIVATE cxx_std_23)
