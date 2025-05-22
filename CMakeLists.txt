@@ -4,7 +4,7 @@ project(ED1_PROVA2 VERSION 1.0 LANGUAGES CXX)
 
 set(SOURCES
   codigo/main.cpp
-  codigo/busca.cpp
+  #codigo/busca.cpp
   codigo/gerador_dados.cpp
   #codigo/ordenacao.cpp
 )
