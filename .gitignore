@@ -34,3 +34,6 @@
 
 # Build directory
 /build
+
+# Pasta de dados
+/dados
