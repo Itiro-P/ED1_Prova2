@@ -60,3 +60,20 @@ void insertion_sort_padrao(T vet){
         }
     }
 }
+
+template <typename T>
+
+void insertion_sort_otimizado(T vet){
+    int key;
+    for(size_t i = 1; i < vet.size(); i++){
+        key = vet[i];
+        if(key < vet[i-1]){
+            vet.pop(i);
+            for(size_t j = i; j >= 0; j--){
+                if(key < vet[j] || j == 0){
+                    vet.insert(j, key);
+                }
+            }
+        }
+    }
+}
