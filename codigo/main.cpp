@@ -1,7 +1,7 @@
-#include "gerador_dados.hpp"
+#include "gerador_dados.cpp"
 
 int main() {
-    gerarNumeros(GRANDE);
-    lerNumeros(GRANDE);
+    gerarNumeros(PEQUENO);
+    lerNumeros(PEQUENO);
     return 0;
 }

@@ -1,5 +1,5 @@
-#include "gerador_dados.hpp"
-
+#include <cstdint>
+#include <vector>
 #include <fstream>
 #include <random>
 #include <string>
@@ -7,13 +7,21 @@
 #include <limits>
 #include <iostream>
 
+enum qtdNumeros {
+    PEQUENO,
+    MEDIO,
+    GRANDE
+};
+
+static constexpr const char* nomes[] = { "PEQUENO", "MEDIO", "GRANDE" };
+
 static std::filesystem::path BASE_DIR = std::filesystem::path{ DATA_DIR };
 
 static std::random_device rd;
 static std::mt19937 gen(rd());
 static std::uniform_int_distribution<> distrib(std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max());
 
-void gerarNumeros(const qtdNumeros qtd) {
+static void gerarNumeros(const qtdNumeros qtd) {
     size_t n = 0;
     std::filesystem::path str = BASE_DIR / nomes[qtd];
     std::ofstream arquivo(str, std::ios::binary);
@@ -35,7 +43,7 @@ void gerarNumeros(const qtdNumeros qtd) {
     }
 }
 
-std::vector<int32_t> lerNumeros(const qtdNumeros qtd) {
+static std::vector<int32_t> lerNumeros(const qtdNumeros qtd) {
     size_t n = 0;
     switch(qtd) {
         default:
@@ -65,7 +73,7 @@ std::vector<int32_t> lerNumeros(const qtdNumeros qtd) {
     return res;
 }
 
-bool isSorted(const std::vector<int32_t> vec) {
+static bool isSorted(const std::vector<int32_t> vec) {
     int32_t prev = vec.front();
     for(auto it = vec.begin() + 1; it != vec.end(); ++it) {
         if(prev > *it) return false;
