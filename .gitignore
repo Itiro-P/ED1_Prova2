@@ -37,3 +37,6 @@
 
 # Pasta de dados
 /dados
+
+# Pasta vscode
+/.vscode
