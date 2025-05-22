@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
 
 std::vector<int> vetor_aleatorio(int n) {
     std::vector<int> vet(n);
