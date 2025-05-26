@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.20)
 
 project(ED1_PROVA2 VERSION 1.0 LANGUAGES CXX)
 
