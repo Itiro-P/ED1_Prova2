@@ -1,3 +1,4 @@
+#include <cstddef>
 template <typename T>
 
 int busca_binaria(T vet, int x){
@@ -13,7 +14,7 @@ int busca_binaria(T vet, int x){
             maior.push_back(vet[i]);
         }
         result = busca_binaria(maior, x);
-    } else if (x < vet[num_med]){
+    } else if (x < vet[pos_med]){
         T menor;
         for(size_t i = pos_min; i < pos_med; i++){
             menor.push_back(vet[i]);

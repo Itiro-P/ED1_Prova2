@@ -1,4 +1,3 @@
-#include <cstdint>
 #include <vector>
 #include <fstream>
 #include <random>
@@ -38,12 +37,12 @@ static void gerarNumeros(const qtdNumeros qtd) {
         break;
     }
     for(size_t i = 0; i < n; ++i) {
-        int32_t valor = distrib(gen);
+        int valor = distrib(gen);
         arquivo.write(reinterpret_cast<const char*>(&valor), sizeof(valor));
     }
 }
 
-static std::vector<int32_t> lerNumeros(const qtdNumeros qtd) {
+static std::vector<int> lerNumeros(const qtdNumeros qtd) {
     size_t n = 0;
     switch(qtd) {
         default:
@@ -73,8 +72,8 @@ static std::vector<int32_t> lerNumeros(const qtdNumeros qtd) {
     return res;
 }
 
-static bool isSorted(const std::vector<int32_t> vec) {
-    int32_t prev = vec.front();
+static bool isSorted(const std::vector<int> vec) {
+    int prev = vec.front();
     for(auto it = vec.begin() + 1; it != vec.end(); ++it) {
         if(prev > *it) return false;
         prev = *it;
