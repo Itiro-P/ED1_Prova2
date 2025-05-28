@@ -7,6 +7,7 @@ set(SOURCES
   codigo/busca.cpp
   codigo/gerador_dados.cpp
   codigo/ordenacao.cpp
+  codigo/cronometro.cpp
 )
 
 add_executable(ed1_prova2 ${SOURCES})

@@ -12,61 +12,42 @@ enum qtdNumeros {
     GRANDE
 };
 
+const size_t qtdNumerosSize[3] = {
+    30000,
+    120000,
+    300000
+};
+
 static constexpr const char* nomes[] = { "PEQUENO", "MEDIO", "GRANDE" };
 
 static std::filesystem::path BASE_DIR = std::filesystem::path{ DATA_DIR };
 
 static std::random_device rd;
 static std::mt19937 gen(rd());
-static std::uniform_int_distribution<> distrib(std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max());
+static std::uniform_int_distribution<> distrib(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
 
-static void gerarNumeros(const qtdNumeros qtd) {
-    size_t n = 0;
+static void gerarNumeros(const qtdNumeros qtd = PEQUENO) {
+    size_t n = qtdNumerosSize[qtd];
     std::filesystem::path str = BASE_DIR / nomes[qtd];
     std::ofstream arquivo(str, std::ios::binary);
-    switch(qtd) {
-        default:
-        case PEQUENO:
-        n = 100;
-        break;
-        case MEDIO:
-        n = 100000;
-        break;
-        case GRANDE:
-        n = 100000000;
-        break;
-    }
     for(size_t i = 0; i < n; ++i) {
         int valor = distrib(gen);
         arquivo.write(reinterpret_cast<const char*>(&valor), sizeof(valor));
     }
 }
 
-static std::vector<int> lerNumeros(const qtdNumeros qtd) {
-    size_t n = 0;
-    switch(qtd) {
-        default:
-        case PEQUENO:
-        n = 100;
-        break;
-        case MEDIO:
-        n = 100000;
-        break;
-        case GRANDE:
-        n = 100000000;
-        break;
-    }
+static std::vector<int> lerNumeros(const qtdNumeros qtd = PEQUENO) {
+    size_t n = qtdNumerosSize[qtd];
 
     std::filesystem::path str = BASE_DIR / nomes[qtd];
     std::ifstream arquivo(str, std::ios::binary);
 
-    std::vector<int32_t> res;
+    std::vector<int> res;
     res.reserve(n);
 
     for (size_t i = 0; i < n; ++i) {
-        int32_t valor;
+        int valor;
         arquivo.read(reinterpret_cast<char*>(&valor), sizeof(valor));
-        std::cout << valor << '\n';
         res.push_back(valor);
     }
     return res;

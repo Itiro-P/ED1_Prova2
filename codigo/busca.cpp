@@ -1,39 +1,52 @@
-#include <cstddef>
-template <typename T>
+#include <vector>
 
-int busca_binaria(T vet, int x){
-    int result = 0;
-    int pos_max = vet.size()-1;
-    int pos_min = 0;
-    int pos_med = (pos_max-pos_min)/2;
+static int comparacoesBusca = 0;
+
+static int recursiva(int pos_min, int pos_max, std::vector<int> &vet, int x) {
+    if (pos_min > pos_max) return -1;
+    
+    size_t pos_med = pos_min + (pos_max - pos_min) / 2;
+    
+    ++comparacoesBusca;
+    if(vet[pos_med] == x) {
+        return pos_med;
+    } else if (x > vet[pos_med]) {
+        return recursiva(pos_med + 1, pos_max, vet, x);
+    } else {
+        return recursiva(pos_min, pos_med - 1, vet, x);
+    }
+}
+
+static int busca_binaria(std::vector<int> &vet, int x) {
+    comparacoesBusca = 0;
+    
+    if (vet.empty()) return -1;
+    
+    size_t pos_max = vet.size() - 1;
+    size_t pos_min = 0;
+    size_t pos_med = pos_min + (pos_max - pos_min) / 2;
+    
+    ++comparacoesBusca;
     if(x == vet[pos_med]){
-        return vet[pos_med];
+        return pos_med;
     } else if (x > vet[pos_med]){
-        T maior;
-        for(size_t i = pos_med+1; i <= pos_max; i++){
-            maior.push_back(vet[i]);
-        }
-        result = busca_binaria(maior, x);
-    } else if (x < vet[pos_med]){
-        T menor;
-        for(size_t i = pos_min; i < pos_med; i++){
-            menor.push_back(vet[i]);
-        }
-        result = busca_binaria(menor, x);
+        return recursiva(pos_med + 1, pos_max, vet, x);
+    } else {
+        return recursiva(pos_min, pos_med - 1, vet, x);
     }
-    return result;
 }
 
-template <typename T>
-
-int busca_sequencial(T vet, int x){
-    int result = 0;
-    for(int i = 0; i < vet.size(); i++){
-        if(x == vet[i]){
-            result = vet[i];
-        }
+static int busca_sequencial(std::vector<int> &vet, int x) {
+    comparacoesBusca = 0;
+    
+    for(size_t i = 0; i < vet.size(); ++i) {
+        ++comparacoesBusca;
+        if(vet[i] == x) return i;
     }
-    return result;
+    
+    return -1;
 }
 
-
+static int getComparacoesBusca() {
+    return comparacoesBusca;
+}
