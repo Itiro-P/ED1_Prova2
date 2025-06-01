@@ -33,7 +33,7 @@ void teste_busca(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = f
     // Elege um número presente no vetor.
     int it = teste.at(randN(n));
     std::string str = (n == PEQUENO ? "pequena": (n == MEDIO ? "mediana" : "grande"));
-    std::cout << "O algoritmo " << nome << " está ordenando uma quantidade de números " << str << "...\n";
+    std::cout << "O algoritmo " << nome << " está procurando em uma quantidade de números " << str << "...\n";
     Cronometro cro(nome);
     size_t res = algoritmo(teste, it);
     std::cout << "Comparações realizadas: " << static_cast<size_t>(getComparacoesBusca()) << "\nNúmero achado: " << it << "; Posição: " << res << '\n';
