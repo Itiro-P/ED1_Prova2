@@ -15,7 +15,7 @@ enum qtdNumeros {
 const size_t qtdNumerosSize[3] = {
     30000,
     120000,
-    300000
+    200000
 };
 
 static constexpr const char* nomes[] = { "PEQUENO", "MEDIO", "GRANDE" };
@@ -25,6 +25,21 @@ static std::filesystem::path BASE_DIR = std::filesystem::path{ DATA_DIR };
 static std::random_device rd;
 static std::mt19937 gen(rd());
 static std::uniform_int_distribution<> distrib(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+static std::uniform_int_distribution<> qtdRandPequeno(0, qtdNumerosSize[0]);
+static std::uniform_int_distribution<> qtdRandMedio(0, qtdNumerosSize[1]);
+static std::uniform_int_distribution<> qtdRandGrande(0, qtdNumerosSize[2]);
+
+static int randN(qtdNumeros n) {
+    switch(n) {
+        case PEQUENO:
+        return qtdRandPequeno(gen);
+        case MEDIO:
+        return qtdRandMedio(gen);
+        case GRANDE:
+        return qtdRandGrande(gen);
+    }
+    return qtdRandPequeno(gen);
+}
 
 static void gerarNumeros(const qtdNumeros qtd = PEQUENO) {
     size_t n = qtdNumerosSize[qtd];

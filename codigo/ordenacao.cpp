@@ -52,38 +52,20 @@ namespace bubble_sort {
     }
 }
 
-namespace insertion_sort {
-    static void original(std::vector<int> &vet) {
-        comparacoesSort = 0;
-        for(size_t step = 1; step < vet.size(); ++step) {
-            ++comparacoesSort;
-            int revStep = step-1;
-            int key = vet[step];
-            vet[step] = vet[step-1];
-            while(revStep >= 0 && key < vet[revStep]) {
-                ++comparacoesSort;
-                vet[revStep + 1] = vet[revStep];
-                --revStep;
-            }
-            vet[revStep + 1] = key;
-        }
-    }
+static void insertion_sort(std::vector<int> &vet) {
+    comparacoesSort = 0;
+    if(vet.size() < 2) return;
 
-    static void optimized(std::vector<int> &vet) {
-        comparacoesSort = 0;
-        if(vet.size() < 2) return;
-
-        for(auto step = vet.begin() + 1; step != vet.end(); ++step) {
+    for(auto step = vet.begin() + 1; step != vet.end(); ++step) {
+        ++comparacoesSort;
+        int key = *step;
+        auto revStep = step - 1;
+        while(revStep != vet.begin() && key < *revStep) {
             ++comparacoesSort;
-            int key = *step;
-            auto revStep = step - 1;
-            while(revStep != vet.begin() && key < *revStep) {
-                ++comparacoesSort;
-                std::iter_swap(revStep, (revStep + 1));
-                --revStep;
-            }
             std::iter_swap(revStep, (revStep + 1));
+            --revStep;
         }
+        std::iter_swap(revStep, (revStep + 1));
     }
 }
 

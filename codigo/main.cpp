@@ -8,32 +8,6 @@
 #include "busca.cpp"
 #include "cronometro.cpp"
 
-struct Resultado {
-    std::string algoritmo;
-    std::string tamanho;
-    size_t n_elementos;
-    double tempo_ns;
-    double tempo_ms;
-    double tempo_s;
-    int comparacoes;
-};
-
-static std::vector<Resultado> resultados;
-
-static void salvarResultadosCSV(const std::string& filename) {
-    std::ofstream file(filename);
-    file << "algoritmo,tamanho,n_elementos,tempo_ns,tempo_ms,tempo_s,comparacoes\n";
-    for (const auto& res : resultados) {
-        file << std::quoted(res.algoritmo) << ","
-             << std::quoted(res.tamanho) << ","
-             << res.n_elementos << ","
-             << res.tempo_ns << ","
-             << res.tempo_ms << ","
-             << res.tempo_s << ","
-             << res.comparacoes << "\n";
-    }
-}
-
 template<typename Func>
 void teste_sort(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = false) {
     if(gerarN) {
@@ -43,30 +17,59 @@ void teste_sort(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = fa
     std::vector<int> teste = lerNumeros(n);
     std::string str = (n == PEQUENO ? "pequena": (n == MEDIO ? "mediana" : "grande"));
     std::cout << "O algoritmo " << nome << " está ordenando uma quantidade de números " << str << "...\n";
-    Cronometro res(nome);
+    Cronometro cro(nome);
     algoritmo(teste);
+    std::cout << "Comparações realizadas: " << getComparacoesSort() << '\n';
+}
+
+template<typename Func>
+void teste_busca(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = false) {
+    if(gerarN) {
+        std::cout << "Gerando números\n";
+        gerarNumeros(n);
+    }
+    std::vector<int> teste = lerNumeros(n);
+    
+    // Elege um número presente no vetor.
+    int it = teste.at(randN(n));
+    std::string str = (n == PEQUENO ? "pequena": (n == MEDIO ? "mediana" : "grande"));
+    std::cout << "O algoritmo " << nome << " está ordenando uma quantidade de números " << str << "...\n";
+    Cronometro cro(nome);
+    size_t res = algoritmo(teste, it);
+    std::cout << "Comparações realizadas: " << getComparacoesBusca() << "\nNúmero achado: " << it << "; Posição: " << res << '\n';
 }
 
 int main() {
-    std::map<std::string, std::function<void(std::vector<int>&)>> algoritmos = {
+    std::map<std::string, std::function<void(std::vector<int>&)>> algoritmosSort = {
         {"Selection Sort", selection_sort},
         {"Bubble Sort Original", bubble_sort::original},
         {"Bubble Sort Otimizado", bubble_sort::optimized},
-        {"Insertion Sort Original", insertion_sort::original},
-        {"Insertion Sort Otimizado", insertion_sort::optimized}
+        {"Insertion Sort", insertion_sort}
     };
 
     const qtdNumeros tamanhos[] = {PEQUENO, MEDIO, GRANDE};
     bool primeiro_teste = true;
 
-    for (const auto& algo : algoritmos) {
+    /*
+    for (const auto& algo : algoritmosSort) {
         for (auto tamanho : tamanhos) {
             teste_sort(algo.second, algo.first, tamanho, primeiro_teste);
             primeiro_teste = false;
         }
     }
+        */
 
-    salvarResultadosCSV("resultados_ordenacao.csv");
-    std::cout << "Resultados exportados para 'resultados_ordenacao.csv'\n";
+    std::map<std::string, std::function<int(std::vector<int>&, int&)>> algoritmosBusca = {
+        {"Busca Binária", busca_binaria},
+        {"Busca Sequencial", busca_sequencial}
+    };
+
+    for (const auto& algo : algoritmosBusca) {
+        for (auto tamanho : tamanhos) {
+            teste_busca(algo.second, algo.first, tamanho, primeiro_teste);
+            primeiro_teste = false;
+        }
+    }
+
     return 0;
 }
