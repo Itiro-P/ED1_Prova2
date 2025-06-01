@@ -47,6 +47,6 @@ static int busca_sequencial(std::vector<int> &vet, int x) {
     return -1;
 }
 
-static int getComparacoesBusca() {
+static size_t getComparacoesBusca() {
     return comparacoesBusca;
 }

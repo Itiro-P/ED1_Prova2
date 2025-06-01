@@ -19,7 +19,7 @@ void teste_sort(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = fa
     std::cout << "O algoritmo " << nome << " está ordenando uma quantidade de números " << str << "...\n";
     Cronometro cro(nome);
     algoritmo(teste);
-    std::cout << "Comparações realizadas: " << getComparacoesSort() << '\n';
+    std::cout << "Comparações realizadas: " << static_cast<size_t>(getComparacoesSort()) << '\n';
 }
 
 template<typename Func>
@@ -29,14 +29,14 @@ void teste_busca(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = f
         gerarNumeros(n);
     }
     std::vector<int> teste = lerNumeros(n);
-    
+
     // Elege um número presente no vetor.
     int it = teste.at(randN(n));
     std::string str = (n == PEQUENO ? "pequena": (n == MEDIO ? "mediana" : "grande"));
     std::cout << "O algoritmo " << nome << " está ordenando uma quantidade de números " << str << "...\n";
     Cronometro cro(nome);
     size_t res = algoritmo(teste, it);
-    std::cout << "Comparações realizadas: " << getComparacoesBusca() << "\nNúmero achado: " << it << "; Posição: " << res << '\n';
+    std::cout << "Comparações realizadas: " << static_cast<size_t>(getComparacoesBusca()) << "\nNúmero achado: " << it << "; Posição: " << res << '\n';
 }
 
 int main() {
@@ -50,14 +50,12 @@ int main() {
     const qtdNumeros tamanhos[] = {PEQUENO, MEDIO, GRANDE};
     bool primeiro_teste = true;
 
-    /*
     for (const auto& algo : algoritmosSort) {
         for (auto tamanho : tamanhos) {
             teste_sort(algo.second, algo.first, tamanho, primeiro_teste);
             primeiro_teste = false;
         }
     }
-        */
 
     std::map<std::string, std::function<int(std::vector<int>&, int&)>> algoritmosBusca = {
         {"Busca Binária", busca_binaria},

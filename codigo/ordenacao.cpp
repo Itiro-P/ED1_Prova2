@@ -69,6 +69,6 @@ static void insertion_sort(std::vector<int> &vet) {
     }
 }
 
-static int getComparacoesSort() {
+static size_t getComparacoesSort() {
     return comparacoesSort;
 }
