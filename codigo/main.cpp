@@ -10,7 +10,6 @@
 
 template<typename Func>
 void rodar_algoritmo(Func algoritmo, std::string nome, std::vector<int>& vec) {
-    Cronometro cro(nome);
     std::pair<size_t, size_t> res = algoritmo(vec);
     std::cout << "Trocas realizadas: " << static_cast<size_t>(res.first) << "\nComparações realizadas: " << static_cast<size_t>(res.second) << '\n';
 }
@@ -23,14 +22,13 @@ void teste_sort(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = fa
     }
     std::vector<int> teste = lerNumeros(n);
     std::string str = (n == PEQUENO ? "pequena": (n == MEDIO ? "mediana" : "grande"));
-    std::cout << "O algoritmo " << nome << " está ordenando uma quantidade de números " << str << "...\n";
+    std::cout << "\nO algoritmo " << nome << " está ordenando uma quantidade de números " << str << "...\n";
     rodar_algoritmo(algoritmo, nome, teste);
     salvarVetor(teste, n);
 }
 
 template<typename Func>
 void rodar_busca(Func algoritmo, std::string nome, std::vector<int>& vec, int it) {
-    Cronometro cro(nome);
     std::pair<size_t, size_t> res = algoritmo(vec, it);
     std::cout << "Comparações realizadas: " << static_cast<size_t>(res.second) << "\nNúmero achado: " << it << "; Posição: " << res.first << '\n';
 }
@@ -46,7 +44,7 @@ void teste_busca(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = f
     // Elege um número presente no vetor.
     int it = teste.at(randN(n));
     std::string str = (n == PEQUENO ? "pequena": (n == MEDIO ? "mediana" : "grande"));
-    std::cout << "O algoritmo " << nome << " está procurando em uma quantidade de números " << str << "...\n";
+    std::cout << "\nO algoritmo " << nome << " está procurando em uma quantidade de números " << str << "...\n";
     rodar_busca(algoritmo, nome, teste, it);
 }
 

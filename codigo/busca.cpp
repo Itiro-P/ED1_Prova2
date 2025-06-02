@@ -1,5 +1,6 @@
 #include <vector>
 #include <stddef.h>
+#include "cronometro.cpp"
 
 static std::pair<size_t, size_t> recursiva(size_t pos_min, size_t pos_max, std::vector<int> &vet, int x, size_t comp) {
     if (pos_min > pos_max) return std::pair<size_t, size_t>(0, comp);
@@ -17,6 +18,7 @@ static std::pair<size_t, size_t> recursiva(size_t pos_min, size_t pos_max, std::
 }
 
 static std::pair<size_t, size_t> busca_binaria(std::vector<int> &vet, int x) {
+    Cronometro cro("Busca binária");
     size_t comparacoesBusca = 0;
     
     if (vet.empty()) return std::pair<size_t, size_t>(0, comparacoesBusca);
@@ -36,6 +38,7 @@ static std::pair<size_t, size_t> busca_binaria(std::vector<int> &vet, int x) {
 }
 
 static std::pair<size_t, size_t> busca_sequencial(std::vector<int> &vet, int x) {
+    Cronometro cro("Busca Sequencial");
     size_t comparacoesBusca = 0;
     
     for(size_t i = 0; i < vet.size(); ++i) {

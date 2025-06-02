@@ -1,3 +1,5 @@
+#pragma once
+
 #include <chrono>
 #include <string>
 #include <iostream>
@@ -15,6 +17,6 @@ class Cronometro {
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - clock);
         const double res = duration.count();
-        std::cout << "Tempo decorrido para " << nome << ": " << res << " ns; " << res/1000000 << " ms; " << res/1000000000 << "s.\n\n\n";
+        std::cout << "Tempo decorrido para " << nome << ": " << res << " ns; " << res/1000000 << " ms; " << res/1000000000 << "s.\n";
     }
 };

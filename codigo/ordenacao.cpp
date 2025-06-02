@@ -2,29 +2,33 @@
 #include <vector>
 #include <iostream>
 #include <stddef.h>
+#include "cronometro.cpp"
 
 namespace selection_sort {
     static std::pair<size_t, size_t> original(std::vector<int> &vet){ 
+        Cronometro cro("Selection Sort Original");
         if(vet.size() <= 0) return std::pair<size_t, size_t>(0, 0);
 
         size_t comparacoes = 0;
         size_t trocas = 0;
         for(auto i = vet.begin(); i != vet.end(); ++i) {
-            ++comparacoes;
             auto toSwap = i;
             for(auto j = i+1; j != vet.end(); ++j) {
                 ++comparacoes;
                 if(*j < *toSwap) {
-                    ++trocas;
                     toSwap = j;
                 }
             }
-            std::iter_swap(toSwap, i);
+            if(toSwap != i) {
+                std::iter_swap(toSwap, i);
+                ++trocas;
+            }
         }
         return std::pair<size_t, size_t>(trocas, comparacoes);
     }
 
-    static std::pair<size_t, size_t> optimized(std::vector<int> &vet){
+    static std::pair<size_t, size_t> optimized(std::vector<int> &vet) {
+        Cronometro cro("Selection Sort Otimizado");
         auto n = vet.size();
         if(n <= 1) return std::pair<size_t, size_t>(0, 0);
         size_t comparacoes = 0;
@@ -36,26 +40,22 @@ namespace selection_sort {
         while(left < right) {
             auto minIt = left;
             auto maxIt = left;
-            ++comparacoes;
             for(auto it = left + 1; it <= right; ++it) {
                 ++comparacoes;
                 if(*it < *minIt) {
-                    ++trocas;
                     minIt = it;
                 }
                 else {
                     ++comparacoes;
                     if(*it > *maxIt) {
-                        ++trocas;
                         maxIt = it;
                     }
                 }
             }
             if(minIt != left) {
-                ++comparacoes;
+                ++trocas;
                 std::iter_swap(minIt, left);
                 if(maxIt == left) {
-                    ++trocas;
                     maxIt = minIt;
                 }
             }
@@ -73,11 +73,11 @@ namespace selection_sort {
 
 namespace bubble_sort {
     static std::pair<size_t, size_t> original(std::vector<int> &vet) {
+        Cronometro cro("Bubble Sort Original");
         size_t comparacoes = 0;
         size_t trocas = 0;
         auto end = vet.end();
         do {
-            ++comparacoes;
             for(auto it = vet.begin(); it + 1 != end; ++it) {
                 ++comparacoes;
                 if(*it > *(it + 1)) {
@@ -91,13 +91,13 @@ namespace bubble_sort {
     }
 
     static std::pair<size_t, size_t> optimized(std::vector<int> &vet) {
+        Cronometro cro("Bubble Sort Otimizado");
         if(vet.size() < 2) return std::pair<size_t, size_t>(0, 0);
         size_t comparacoes = 0;
         size_t trocas = 0;
         bool swapped = false;
         auto end = vet.end();
         do {
-            ++comparacoes;
             swapped = false;
             for(auto it = vet.begin(); it + 1 != end; ++it) {
                 ++comparacoes;
@@ -113,23 +113,31 @@ namespace bubble_sort {
     }
 }
 
+
 static std::pair<size_t, size_t> insertion_sort(std::vector<int> &vet) {
-    if(vet.size() < 2) return std::pair<size_t, size_t>(0, 0);
+    Cronometro cro("Insertion Sort");
+    if(vet.size() < 2) return {0, 0};
 
     size_t comparacoes = 0;
     size_t trocas = 0;
 
     for(auto step = vet.begin() + 1; step != vet.end(); ++step) {
-        ++comparacoes;
         int key = *step;
         auto revStep = step - 1;
-        while(revStep != vet.begin() && key < *revStep) {
-            ++comparacoes;
+
+        ++comparacoes;
+        while(key < *revStep) {
             ++trocas;
             *(revStep + 1) = *revStep;
+
+            if(revStep == vet.begin()) {
+                revStep = vet.begin() - 1; 
+                break;
+            }
             --revStep;
+            ++comparacoes;
         }
         *(revStep + 1) = key;
     }
-    return std::pair<size_t, size_t>(trocas, comparacoes);
+    return {trocas, comparacoes};
 }
