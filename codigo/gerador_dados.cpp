@@ -6,6 +6,7 @@
 #include <limits>
 #include <iostream>
 
+
 enum qtdNumeros {
     PEQUENO,
     MEDIO,
@@ -13,7 +14,7 @@ enum qtdNumeros {
 };
 
 const size_t qtdNumerosSize[3] = {
-    30000,
+    24000,
     120000,
     250000
 };

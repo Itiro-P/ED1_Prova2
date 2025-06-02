@@ -1,28 +1,34 @@
 #include <algorithm> // Usado aqui para usar std::iter_swap
 #include <vector>
 #include <iostream>
+#include <stddef.h>
 
 namespace selection_sort {
-    static size_t original(std::vector<int> &vet){
-        size_t comparacoesSort = 0;
-        if(vet.size() <= 0) return 0;
+    static std::pair<size_t, size_t> original(std::vector<int> &vet){ 
+        if(vet.size() <= 0) return std::pair<size_t, size_t>(0, 0);
 
+        size_t comparacoes = 0;
+        size_t trocas = 0;
         for(auto i = vet.begin(); i != vet.end(); ++i) {
-            ++comparacoesSort;
+            ++comparacoes;
             auto toSwap = i;
             for(auto j = i+1; j != vet.end(); ++j) {
-                ++comparacoesSort;
-                if(*j < *toSwap) toSwap = j;
+                ++comparacoes;
+                if(*j < *toSwap) {
+                    ++trocas;
+                    toSwap = j;
+                }
             }
             std::iter_swap(toSwap, i);
         }
-        return comparacoesSort;
+        return std::pair<size_t, size_t>(trocas, comparacoes);
     }
 
-    static size_t optimized(std::vector<int> &vet){
-        size_t comparacoesSort = 0;
+    static std::pair<size_t, size_t> optimized(std::vector<int> &vet){
         auto n = vet.size();
-        if(n <= 1) return 0;
+        if(n <= 1) return std::pair<size_t, size_t>(0, 0);
+        size_t comparacoes = 0;
+        size_t trocas = 0;
 
         auto left  = vet.begin();
         auto right = vet.end() - 1;
@@ -30,77 +36,100 @@ namespace selection_sort {
         while(left < right) {
             auto minIt = left;
             auto maxIt = left;
+            ++comparacoes;
             for(auto it = left + 1; it <= right; ++it) {
-                ++comparacoesSort;
-                if(*it < *minIt) minIt = it;
+                ++comparacoes;
+                if(*it < *minIt) {
+                    ++trocas;
+                    minIt = it;
+                }
                 else {
-                    ++comparacoesSort;
-                    if(*it > *maxIt) maxIt = it;
+                    ++comparacoes;
+                    if(*it > *maxIt) {
+                        ++trocas;
+                        maxIt = it;
+                    }
                 }
             }
             if(minIt != left) {
+                ++comparacoes;
                 std::iter_swap(minIt, left);
-                if(maxIt == left) maxIt = minIt;
+                if(maxIt == left) {
+                    ++trocas;
+                    maxIt = minIt;
+                }
             }
-            if(maxIt != right) std::iter_swap(maxIt, right);
+            if(maxIt != right) {
+                ++trocas;
+                std::iter_swap(maxIt, right);
+            }
             ++left;
             --right;
         }
 
-        return comparacoesSort;
+        return std::pair<size_t, size_t>(trocas, comparacoes);
     }
 }
 
 namespace bubble_sort {
-    static size_t original(std::vector<int> &vet) {
-        size_t comparacoesSort = 0;
+    static std::pair<size_t, size_t> original(std::vector<int> &vet) {
+        size_t comparacoes = 0;
+        size_t trocas = 0;
         auto end = vet.end();
         do {
-            ++comparacoesSort;
+            ++comparacoes;
             for(auto it = vet.begin(); it + 1 != end; ++it) {
-                ++comparacoesSort;
-                if(*it > *(it + 1)) std::iter_swap(it, (it+1));
+                ++comparacoes;
+                if(*it > *(it + 1)) {
+                    ++trocas;
+                    std::iter_swap(it, (it+1));
+                }
             }
             --end;
         } while(end > vet.begin());
-        return comparacoesSort;
+        return std::pair<size_t, size_t>(trocas, comparacoes);
     }
 
-    static size_t optimized(std::vector<int> &vet) {
-        size_t comparacoesSort = 0;
-        if(vet.size() < 2) return 0;
+    static std::pair<size_t, size_t> optimized(std::vector<int> &vet) {
+        if(vet.size() < 2) return std::pair<size_t, size_t>(0, 0);
+        size_t comparacoes = 0;
+        size_t trocas = 0;
         bool swapped = false;
         auto end = vet.end();
         do {
-            ++comparacoesSort;
+            ++comparacoes;
             swapped = false;
             for(auto it = vet.begin(); it + 1 != end; ++it) {
-                ++comparacoesSort;
+                ++comparacoes;
                 if(*it > *(it + 1)) {
+                    ++trocas;
                     std::iter_swap(it, (it+1));
                     swapped = true;
                 }
             }
             --end;
         } while(swapped); 
-        return comparacoesSort;
+        return std::pair<size_t, size_t>(trocas, comparacoes);
     }
 }
 
-static size_t insertion_sort(std::vector<int> &vet) {
-    size_t comparacoesSort = 0;
-    if(vet.size() < 2) return 0;
+static std::pair<size_t, size_t> insertion_sort(std::vector<int> &vet) {
+    if(vet.size() < 2) return std::pair<size_t, size_t>(0, 0);
+
+    size_t comparacoes = 0;
+    size_t trocas = 0;
 
     for(auto step = vet.begin() + 1; step != vet.end(); ++step) {
-        ++comparacoesSort;
+        ++comparacoes;
         int key = *step;
         auto revStep = step - 1;
         while(revStep != vet.begin() && key < *revStep) {
-            ++comparacoesSort;
+            ++comparacoes;
+            ++trocas;
             *(revStep + 1) = *revStep;
             --revStep;
         }
         *(revStep + 1) = key;
     }
-    return comparacoesSort;
+    return std::pair<size_t, size_t>(trocas, comparacoes);
 }

@@ -11,8 +11,8 @@
 template<typename Func>
 void rodar_algoritmo(Func algoritmo, std::string nome, std::vector<int>& vec) {
     Cronometro cro(nome);
-    size_t res = algoritmo(vec);
-    std::cout << "Comparações realizadas: " << static_cast<size_t>(res) << '\n';
+    std::pair<size_t, size_t> res = algoritmo(vec);
+    std::cout << "Trocas realizadas: " << static_cast<size_t>(res.first) << "\nComparações realizadas: " << static_cast<size_t>(res.second) << '\n';
 }
 
 template<typename Func>
@@ -51,7 +51,7 @@ void teste_busca(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = f
 }
 
 int main() {
-    std::map<std::string, std::function<size_t(std::vector<int>&)>> algoritmosSort = {
+    std::map<std::string, std::function<std::pair<size_t, size_t>(std::vector<int>&)>> algoritmosSort = {
         {"Selection Sort Original", selection_sort::original},
         {"Selection Sort Otimizado", selection_sort::optimized},
         {"Bubble Sort Original", bubble_sort::original},

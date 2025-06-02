@@ -1,4 +1,5 @@
 #include <vector>
+#include <stddef.h>
 
 static std::pair<size_t, size_t> recursiva(size_t pos_min, size_t pos_max, std::vector<int> &vet, int x, size_t comp) {
     if (pos_min > pos_max) return std::pair<size_t, size_t>(0, comp);
