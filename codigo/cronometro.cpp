@@ -1,6 +1,7 @@
 #include <chrono>
 #include <string>
 #include <iostream>
+#include <stddef.h>
 
 class Cronometro {
     std::string nome;

@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <limits>
 #include <iostream>
+#include <stddef.h>
 
 
 enum qtdNumeros {
