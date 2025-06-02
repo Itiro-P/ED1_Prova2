@@ -8,14 +8,16 @@
 #include "busca.cpp"
 #include "cronometro.cpp"
 
-template<typename Func>
-void rodar_algoritmo(Func algoritmo, std::string nome, std::vector<int>& vec) {
+typedef std::function<std::pair<size_t, size_t>(std::vector<int>&)> Algoritmo_Sort;
+
+typedef std::function<std::pair<size_t, size_t>(std::vector<int>&, int)> Algoritmo_Busca;
+
+void rodar_algoritmo(Algoritmo_Sort algoritmo, std::string nome, std::vector<int>& vec) {
     std::pair<size_t, size_t> res = algoritmo(vec);
     std::cout << "Trocas realizadas: " << static_cast<size_t>(res.first) << "\nComparações realizadas: " << static_cast<size_t>(res.second) << '\n';
 }
 
-template<typename Func>
-void teste_sort(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = false) {
+void teste_sort(Algoritmo_Sort  algoritmo, std::string nome, qtdNumeros n, bool gerarN = false) {
     if(gerarN) {
         std::cout << "Gerando números\n";
         gerarNumeros(n);
@@ -27,14 +29,12 @@ void teste_sort(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = fa
     salvarVetor(teste, n);
 }
 
-template<typename Func>
-void rodar_busca(Func algoritmo, std::string nome, std::vector<int>& vec, int it) {
+void rodar_busca(Algoritmo_Busca algoritmo, std::string nome, std::vector<int>& vec, int it) {
     std::pair<size_t, size_t> res = algoritmo(vec, it);
     std::cout << "Comparações realizadas: " << static_cast<size_t>(res.second) << "\nNúmero achado: " << it << "; Posição: " << res.first << '\n';
 }
 
-template<typename Func>
-void teste_busca(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = false) {
+void teste_busca(Algoritmo_Busca algoritmo, std::string nome, qtdNumeros n, bool gerarN = false) {
     if(gerarN) {
         std::cout << "Gerando números\n";
         gerarNumeros(n);
@@ -49,12 +49,12 @@ void teste_busca(Func algoritmo, std::string nome, qtdNumeros n, bool gerarN = f
 }
 
 int main() {
-    std::map<std::string, std::function<std::pair<size_t, size_t>(std::vector<int>&)>> algoritmosSort = {
-        {"Selection Sort Original", selection_sort::original},
-        {"Selection Sort Otimizado", selection_sort::optimized},
-        {"Bubble Sort Original", bubble_sort::original},
-        {"Bubble Sort Otimizado", bubble_sort::optimized},
-        {"Insertion Sort", insertion_sort}
+    std::map<std::string, Algoritmo_Sort> algoritmosSort = {
+        { "Selection Sort Original", selection_sort::original },
+        { "Selection Sort Otimizado", selection_sort::optimized },
+        { "Bubble Sort Original", bubble_sort::original },
+        {"Bubble Sort Otimizado", bubble_sort::optimized },
+        { "Insertion Sort", insertion_sort }
     };
 
     const qtdNumeros tamanhos[] = {PEQUENO, MEDIO, GRANDE};
@@ -67,9 +67,9 @@ int main() {
         }
     }
 
-    std::map<std::string, std::function<std::pair<size_t, size_t>(std::vector<int>&, int)>> algoritmosBusca = {
-        {"Busca Binária", busca_binaria},
-        {"Busca Sequencial", busca_sequencial}
+    std::map<std::string, Algoritmo_Busca> algoritmosBusca = {
+        { "Busca Binária", busca_binaria },
+        { "Busca Sequencial", busca_sequencial }
     };
 
     for (const auto& algo : algoritmosBusca) {
