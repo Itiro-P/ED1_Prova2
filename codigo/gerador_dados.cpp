@@ -15,10 +15,11 @@ enum qtdNumeros {
 const size_t qtdNumerosSize[3] = {
     30000,
     120000,
-    200000
+    250000
 };
 
 static constexpr const char* nomes[] = { "PEQUENO", "MEDIO", "GRANDE" };
+static constexpr const char* nomesOrdenado[] = { "PEQUENO_ORDENADO", "MEDIO_ORDENADO", "GRANDE_ORDENADO" };
 
 static std::filesystem::path BASE_DIR = std::filesystem::path{ DATA_DIR };
 
@@ -51,10 +52,18 @@ static void gerarNumeros(const qtdNumeros qtd = PEQUENO) {
     }
 }
 
-static std::vector<int> lerNumeros(const qtdNumeros qtd = PEQUENO) {
+static void salvarVetor(std::vector<int>& vec, const qtdNumeros qtd = PEQUENO) {
+    std::filesystem::path str = BASE_DIR / nomesOrdenado[qtd];
+    std::ofstream arquivo(str, std::ios::binary);
+    for(auto &it: vec) {
+        arquivo.write(reinterpret_cast<char*>(&it), sizeof(it));
+    }
+}
+
+static std::vector<int> lerNumeros(const qtdNumeros qtd = PEQUENO, const bool ordenado = false) {
     size_t n = qtdNumerosSize[qtd];
 
-    std::filesystem::path str = BASE_DIR / nomes[qtd];
+    std::filesystem::path str = BASE_DIR / (ordenado ? nomesOrdenado[qtd] : nomes[qtd]);
     std::ifstream arquivo(str, std::ios::binary);
 
     std::vector<int> res;

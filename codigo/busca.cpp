@@ -1,26 +1,24 @@
 #include <vector>
 
-static int comparacoesBusca = 0;
-
-static int recursiva(int pos_min, int pos_max, std::vector<int> &vet, int x) {
-    if (pos_min > pos_max) return -1;
+static std::pair<size_t, size_t> recursiva(size_t pos_min, size_t pos_max, std::vector<int> &vet, int x, size_t comp) {
+    if (pos_min > pos_max) return std::pair<size_t, size_t>(0, comp);
     
     size_t pos_med = pos_min + (pos_max - pos_min) / 2;
     
-    ++comparacoesBusca;
+    ++comp;
     if(vet[pos_med] == x) {
-        return pos_med;
+        return std::pair<size_t, size_t>(pos_med, comp);
     } else if (x > vet[pos_med]) {
-        return recursiva(pos_med + 1, pos_max, vet, x);
+        return recursiva(pos_med + 1, pos_max, vet, x, comp);
     } else {
-        return recursiva(pos_min, pos_med - 1, vet, x);
+        return recursiva(pos_min, pos_med - 1, vet, x, comp);
     }
 }
 
-static int busca_binaria(std::vector<int> &vet, int x) {
-    comparacoesBusca = 0;
+static std::pair<size_t, size_t> busca_binaria(std::vector<int> &vet, int x) {
+    size_t comparacoesBusca = 0;
     
-    if (vet.empty()) return -1;
+    if (vet.empty()) return std::pair<size_t, size_t>(0, comparacoesBusca);
     
     size_t pos_max = vet.size() - 1;
     size_t pos_min = 0;
@@ -28,25 +26,21 @@ static int busca_binaria(std::vector<int> &vet, int x) {
     
     ++comparacoesBusca;
     if(x == vet[pos_med]){
-        return pos_med;
-    } else if (x > vet[pos_med]){
-        return recursiva(pos_med + 1, pos_max, vet, x);
+        return std::pair<size_t, size_t>(pos_med, comparacoesBusca);
+    } else if (x > vet[pos_med]) {
+        return recursiva(pos_med + 1, pos_max, vet, x, comparacoesBusca);
     } else {
-        return recursiva(pos_min, pos_med - 1, vet, x);
+        return recursiva(pos_min, pos_med - 1, vet, x, comparacoesBusca);
     }
 }
 
-static int busca_sequencial(std::vector<int> &vet, int x) {
-    comparacoesBusca = 0;
+static std::pair<size_t, size_t> busca_sequencial(std::vector<int> &vet, int x) {
+    size_t comparacoesBusca = 0;
     
     for(size_t i = 0; i < vet.size(); ++i) {
         ++comparacoesBusca;
-        if(vet[i] == x) return i;
+        if(vet[i] == x) return std::pair<size_t, size_t>(i, comparacoesBusca);
     }
     
-    return -1;
-}
-
-static size_t getComparacoesBusca() {
-    return comparacoesBusca;
+    return std::pair<size_t, size_t>(0, comparacoesBusca);
 }

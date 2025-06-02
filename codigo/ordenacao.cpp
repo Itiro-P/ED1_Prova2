@@ -2,25 +2,58 @@
 #include <vector>
 #include <iostream>
 
-static int comparacoesSort = 0;
+namespace selection_sort {
+    static size_t original(std::vector<int> &vet){
+        size_t comparacoesSort = 0;
+        if(vet.size() <= 0) return 0;
 
-static void selection_sort(std::vector<int> &vet){
-    comparacoesSort = 0;
-    if(vet.size() <= 0) return;
-
-    for(auto i = vet.begin(); i != vet.end(); ++i) {
-        auto toSwap = i;
-        for(auto j = i+1; j != vet.end(); ++j) {
+        for(auto i = vet.begin(); i != vet.end(); ++i) {
             ++comparacoesSort;
-            if(*j < *toSwap) toSwap = j;
+            auto toSwap = i;
+            for(auto j = i+1; j != vet.end(); ++j) {
+                ++comparacoesSort;
+                if(*j < *toSwap) toSwap = j;
+            }
+            std::iter_swap(toSwap, i);
         }
-        std::iter_swap(toSwap, i);
+        return comparacoesSort;
+    }
+
+    static size_t optimized(std::vector<int> &vet){
+        size_t comparacoesSort = 0;
+        auto n = vet.size();
+        if(n <= 1) return 0;
+
+        auto left  = vet.begin();
+        auto right = vet.end() - 1;
+
+        while(left < right) {
+            auto minIt = left;
+            auto maxIt = left;
+            for(auto it = left + 1; it <= right; ++it) {
+                ++comparacoesSort;
+                if(*it < *minIt) minIt = it;
+                else {
+                    ++comparacoesSort;
+                    if(*it > *maxIt) maxIt = it;
+                }
+            }
+            if(minIt != left) {
+                std::iter_swap(minIt, left);
+                if(maxIt == left) maxIt = minIt;
+            }
+            if(maxIt != right) std::iter_swap(maxIt, right);
+            ++left;
+            --right;
+        }
+
+        return comparacoesSort;
     }
 }
 
 namespace bubble_sort {
-    static void original(std::vector<int> &vet) {
-        comparacoesSort = 0;
+    static size_t original(std::vector<int> &vet) {
+        size_t comparacoesSort = 0;
         auto end = vet.end();
         do {
             ++comparacoesSort;
@@ -29,12 +62,13 @@ namespace bubble_sort {
                 if(*it > *(it + 1)) std::iter_swap(it, (it+1));
             }
             --end;
-        } while(end != vet.begin());
+        } while(end > vet.begin());
+        return comparacoesSort;
     }
 
-    static void optimized(std::vector<int> &vet) {
-        comparacoesSort = 0;
-        if(vet.size() < 2) return;
+    static size_t optimized(std::vector<int> &vet) {
+        size_t comparacoesSort = 0;
+        if(vet.size() < 2) return 0;
         bool swapped = false;
         auto end = vet.end();
         do {
@@ -49,12 +83,13 @@ namespace bubble_sort {
             }
             --end;
         } while(swapped); 
+        return comparacoesSort;
     }
 }
 
-static void insertion_sort(std::vector<int> &vet) {
-    comparacoesSort = 0;
-    if(vet.size() < 2) return;
+static size_t insertion_sort(std::vector<int> &vet) {
+    size_t comparacoesSort = 0;
+    if(vet.size() < 2) return 0;
 
     for(auto step = vet.begin() + 1; step != vet.end(); ++step) {
         ++comparacoesSort;
@@ -62,13 +97,10 @@ static void insertion_sort(std::vector<int> &vet) {
         auto revStep = step - 1;
         while(revStep != vet.begin() && key < *revStep) {
             ++comparacoesSort;
-            std::iter_swap(revStep, (revStep + 1));
+            *(revStep + 1) = *revStep;
             --revStep;
         }
-        std::iter_swap(revStep, (revStep + 1));
+        *(revStep + 1) = key;
     }
-}
-
-static size_t getComparacoesSort() {
     return comparacoesSort;
 }
