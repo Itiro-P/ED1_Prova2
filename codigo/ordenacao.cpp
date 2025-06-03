@@ -24,13 +24,13 @@ namespace selection_sort {
                 ++trocas;
             }
         }
-        return std::pair<size_t, size_t>(trocas, comparacoes);
+        return {trocas, comparacoes};
     }
 
     static std::pair<size_t, size_t> optimized(std::vector<int> &vet) {
         Cronometro cro("Selection Sort Otimizado");
         auto n = vet.size();
-        if(n <= 1) return std::pair<size_t, size_t>(0, 0);
+        if(n <= 1) return {0, 0};
         size_t comparacoes = 0;
         size_t trocas = 0;
 
@@ -67,7 +67,7 @@ namespace selection_sort {
             --right;
         }
 
-        return std::pair<size_t, size_t>(trocas, comparacoes);
+        return {trocas, comparacoes};
     }
 }
 
@@ -87,7 +87,7 @@ namespace bubble_sort {
             }
             --end;
         } while(end > vet.begin());
-        return std::pair<size_t, size_t>(trocas, comparacoes);
+        return {trocas, comparacoes};
     }
 
     static std::pair<size_t, size_t> optimized(std::vector<int> &vet) {
@@ -109,7 +109,7 @@ namespace bubble_sort {
             }
             --end;
         } while(swapped); 
-        return std::pair<size_t, size_t>(trocas, comparacoes);
+        return {trocas, comparacoes};
     }
 }
 

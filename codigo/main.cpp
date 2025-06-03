@@ -60,13 +60,6 @@ int main() {
     const qtdNumeros tamanhos[] = {PEQUENO, MEDIO, GRANDE};
     bool primeiro_teste = true;
 
-    for (const auto& algo : algoritmosSort) {
-        for (auto tamanho : tamanhos) {
-            teste_sort(algo.second, algo.first, tamanho, primeiro_teste);
-            primeiro_teste = false;
-        }
-    }
-
     std::map<std::string, Algoritmo_Busca> algoritmosBusca = {
         { "Busca Binária", busca_binaria },
         { "Busca Sequencial", busca_sequencial }

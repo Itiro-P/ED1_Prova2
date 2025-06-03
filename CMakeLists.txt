@@ -10,6 +10,8 @@ set(SOURCES
   codigo/cronometro.cpp
 )
 
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+
 add_executable(ed1_prova2 ${SOURCES})
 
 target_include_directories(ed1_prova2 PRIVATE ${CMAKE_SOURCE_DIR}/codigo)

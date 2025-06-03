@@ -26,7 +26,6 @@ static std::pair<size_t, size_t> busca_binaria(std::vector<int> &vet, int x) {
     size_t pos_max = vet.size() - 1;
     size_t pos_min = 0;
     size_t pos_med = pos_min + (pos_max - pos_min) / 2;
-    
     ++comparacoesBusca;
     if(x == vet[pos_med]){
         return std::pair<size_t, size_t>(pos_med, comparacoesBusca);
@@ -46,5 +45,5 @@ static std::pair<size_t, size_t> busca_sequencial(std::vector<int> &vet, int x) 
         if(vet[i] == x) return std::pair<size_t, size_t>(i, comparacoesBusca);
     }
     
-    return std::pair<size_t, size_t>(0, comparacoesBusca);
+    return {0, comparacoesBusca};
 }

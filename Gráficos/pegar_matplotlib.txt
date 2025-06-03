@@ -1,0 +1,4 @@
+python3 -m venv teste -> cria um ambiente virtual com nome teste
+source teste/bin/activate -> ativa o ambiente virtual
+pip install matplotlib -> instala o matplotlib
+deactivate -> desativa o ambiente virtual
